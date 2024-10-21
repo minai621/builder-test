@@ -58,6 +58,7 @@ jobs:
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
               Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
           }
+        continue-on-error: true
 
       - name: build
         run: pnpx electron-builder --win --publish always
@@ -93,6 +94,7 @@ jobs:
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
               Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
           }
+        continue-on-error: true
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
