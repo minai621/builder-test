@@ -27,12 +27,12 @@ jobs:
       - name: Install Dependencies
         shell: powershell
         run: |
-          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm install --prefer-offline --no-frozen-lockfile" -Wait
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm install --prefer-offline --no-frozen-lockfile"
 
       - name: Build Electron App
         shell: powershell
         run: |
-          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm run build" -Wait
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm run build"
 
       - name: Before check nsis dir
         shell: powershell
@@ -64,13 +64,13 @@ jobs:
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
               Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
           }
-          `"" -Wait
+          `""
         continue-on-error: true
 
       - name: build
         shell: powershell
         run: |
-          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpx electron-builder --win --publish always" -Wait
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpx electron-builder --win --publish always"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
@@ -105,7 +105,7 @@ jobs:
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
               Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
           }
-          `"" -Wait
+          `""
         continue-on-error: true
 
       - name: Upload Release Assets
