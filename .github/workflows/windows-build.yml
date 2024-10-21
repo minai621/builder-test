@@ -25,13 +25,19 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
-        run: pnpm install --prefer-offline --no-frozen-lockfile
+        shell: powershell
+        run: |
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm install --prefer-offline --no-frozen-lockfile" -Wait
 
       - name: Build Electron App
-        run: pnpm run build
+        shell: powershell
+        run: |
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm run build" -Wait
 
       - name: Before check nsis dir
+        shell: powershell
         run: |
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command `"
           # 1. runneradmin 사용자 디렉토리 확인
           dir C:\Users\runneradmin
           # 2. AppData 디렉토리 확인
@@ -50,24 +56,29 @@ jobs:
           dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin
           # 9. makensis.exe 파일 확인
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
-              Write-Host "makensis.exe exists"
+              Write-Host 'makensis.exe exists'
           } else {
-              Write-Host "makensis.exe does not exist"
+              Write-Host 'makensis.exe does not exist'
           }
           # 10. makensis.exe 파일 정보 확인 (파일이 존재하는 경우)
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
               Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
           }
+          `"" -Wait
         continue-on-error: true
 
       - name: build
-        run: pnpx electron-builder --win --publish always
+        shell: powershell
+        run: |
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpx electron-builder --win --publish always" -Wait
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
 
       - name: After check nsis dir
+        shell: powershell
         run: |
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command `"
           # 1. runneradmin 사용자 디렉토리 확인
           dir C:\Users\runneradmin
           # 2. AppData 디렉토리 확인
@@ -86,14 +97,15 @@ jobs:
           dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin
           # 9. makensis.exe 파일 확인
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
-              Write-Host "makensis.exe exists"
+              Write-Host 'makensis.exe exists'
           } else {
-              Write-Host "makensis.exe does not exist"
+              Write-Host 'makensis.exe does not exist'
           }
           # 10. makensis.exe 파일 정보 확인 (파일이 존재하는 경우)
           if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
               Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
           }
+          `"" -Wait
         continue-on-error: true
 
       - name: Upload Release Assets
