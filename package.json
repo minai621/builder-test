@@ -17,11 +17,13 @@
     "electron-builder": "pnpm run build && pnpx electron-builder",
     "release": "pnpm run build && pnpx electron-builder --publish always"
   },
+  "dependencies": {
+    "electron-builder": "^25.1.8"
+  },
   "devDependencies": {
     "@types/node": "^22.7.6",
     "cross-env": "^7.0.3",
     "electron": "^33.0.1",
-    "electron-builder": "^25.1.8",
     "typescript": "^5.3.3"
   },
   "build": {
