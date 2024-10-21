@@ -30,10 +30,69 @@ jobs:
       - name: Build Electron App
         run: pnpm run build
 
+      - name: Before check nsis dir
+        run: |
+          # 1. runneradmin 사용자 디렉토리 확인
+          dir C:\Users\runneradmin
+          # 2. AppData 디렉토리 확인
+          dir C:\Users\runneradmin\AppData
+          # 3. AppData\Local 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local
+          # 4. electron-builder 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder
+          # 5. Cache 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache
+          # 6. nsis 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis
+          # 7. nsis-3.0.4.1 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1
+          # 8. Bin 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin
+          # 9. makensis.exe 파일 확인
+          if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
+              Write-Host "makensis.exe exists"
+          } else {
+              Write-Host "makensis.exe does not exist"
+          }
+          # 10. makensis.exe 파일 정보 확인 (파일이 존재하는 경우)
+          if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
+              Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
+          }
+
       - name: build
         run: pnpx electron-builder --win --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+      - name: After check nsis dir
+        run: |
+          # 1. runneradmin 사용자 디렉토리 확인
+          dir C:\Users\runneradmin
+          # 2. AppData 디렉토리 확인
+          dir C:\Users\runneradmin\AppData
+          # 3. AppData\Local 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local
+          # 4. electron-builder 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder
+          # 5. Cache 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache
+          # 6. nsis 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis
+          # 7. nsis-3.0.4.1 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1
+          # 8. Bin 디렉토리 확인
+          dir C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin
+          # 9. makensis.exe 파일 확인
+          if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
+              Write-Host "makensis.exe exists"
+          } else {
+              Write-Host "makensis.exe does not exist"
+          }
+          # 10. makensis.exe 파일 정보 확인 (파일이 존재하는 경우)
+          if (Test-Path C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe) {
+              Get-ItemProperty C:\Users\runneradmin\AppData\Local\electron-builder\Cache\nsis\nsis-3.0.4.1\Bin\makensis.exe
+          }
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
