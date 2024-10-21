@@ -29,7 +29,6 @@ jobs:
 
       - name: Build Electron App
         run: pnpm run build
-        working-directory: ./native
 
       - name: build
         run: pnpx electron-builder --win --publish always
