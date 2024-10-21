@@ -27,12 +27,12 @@ jobs:
       - name: Install Dependencies
         shell: powershell
         run: |
-          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm install --prefer-offline --no-frozen-lockfile"
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm install --prefer-offline --no-frozen-lockfile" -Wait -NoNewWindow
 
       - name: Build Electron App
         shell: powershell
         run: |
-          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm run build"
+          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpm run build" -Wait -NoNewWindow
 
       - name: Before check nsis dir
         shell: powershell
@@ -58,7 +58,16 @@ jobs:
       - name: build
         shell: powershell
         run: |
-          Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpx electron-builder --win --publish always"
+          try {
+            $process = Start-Process powershell -Verb RunAs -ArgumentList "-Command pnpx electron-builder --win --publish always" -Wait -NoNewWindow -PassThru
+            $process | Out-String
+            if ($process.ExitCode -ne 0) {
+              throw "Build process failed with exit code $($process.ExitCode)"
+            }
+          } catch {
+            Write-Error "An error occurred: $_"
+            throw
+          }
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true
